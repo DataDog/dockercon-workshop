@@ -8,6 +8,11 @@ services:
 
   golang:
     build: golang
+    environment:
+      - twitterConsumerKey
+      - twitterConsumerSecret
+      - twitterAccessToken
+      - twitterTokenSecret
 
   logstash:
     build: logstash

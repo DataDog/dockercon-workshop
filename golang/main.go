@@ -1,20 +1,20 @@
 package main
 
 import (
-	// "encoding/json"
 	"fmt"
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/streadway/amqp"
 	"log"
 	"net/url"
+	"os"
 	"strconv"
 	"time"
 )
 
-var twitterConsumerKey string = "p2tK5rJTpoF9bDi0c3ekWlACd"
-var twitterConsumerSecret string = "nkFXuatVanZjHdzFu7tO5BTYTEL1Q67ZdGUnD23icYvq5V5i38"
-var twitterAccessToken string = "2449901-WgodpCBsfDDH7ujv0Q93OwquxquUWLxBLMPhgDlUhI"
-var twitterTokenSecret string = "3LMxsFFslbcX74cCZebyy44k0fLQBX8tt5UT5qGPk2ljZ"
+var twitterConsumerKey string = os.Getenv("twitterConsumerKey")
+var twitterConsumerSecret string = os.Getenv("twitterConsumerSecret")
+var twitterAccessToken string = os.Getenv("twitterAccessToken")
+var twitterTokenSecret string = os.Getenv("twitterTokenSecret")
 
 var twitterLastRun = time.Now().Add(time.Minute * -5)
 
