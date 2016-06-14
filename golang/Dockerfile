@@ -1,5 +1,5 @@
 FROM golang:1.7-alpine
-EXPOSE 8080
+EXPOSE 8080 8123
 
 RUN apk --update add git wget
 COPY . /go/src/app

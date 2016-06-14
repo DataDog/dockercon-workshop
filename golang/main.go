@@ -5,6 +5,7 @@ import (
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/streadway/amqp"
 	"log"
+	"net"
 	"net/url"
 	"os"
 	"strconv"
@@ -78,7 +79,10 @@ func main() {
 		nil,      // arguments
 	)
 	failOnError(err, "Failed to declare an exchange")
-
+	ch.QueueDeclare("TweetQ", false, false, false, false, nil)
+	err = ch.QueueBind("TweetQ", "logstash", "tweets", false, nil)
+	failOnError(err, "Failed to declare queue")
+	net.Listen("tcp", "8123")
 	anaconda.SetConsumerKey(twitterConsumerKey)
 	anaconda.SetConsumerSecret(twitterConsumerSecret)
 	maxId := int64(9223372036854775807)
@@ -88,7 +92,8 @@ func main() {
 		tweets := collectTweets("dockercon OR docker OR datadog", maxId)
 
 		for _, tweet := range tweets.Statuses {
-			body := []byte(fmt.Sprintf("%v - %v - %v - %v", strconv.FormatInt(tweet.Id, 10), tweet.CreatedAt, tweet.User.ScreenName, tweet.Text))
+			tweettimestamp, _ := time.Parse(time.RubyDate, tweet.CreatedAt)
+			body := []byte(fmt.Sprintf("%v;;;%v;;;%v;;;%v", tweettimestamp.Format(time.RFC3339Nano), strconv.FormatInt(tweet.Id, 10), tweet.User.ScreenName, tweet.Text))
 			// fmt.Println(tweet.Text)
 			maxId = tweet.Id
 			err = ch.Publish(
@@ -99,6 +104,7 @@ func main() {
 				amqp.Publishing{
 					ContentType: "text/plain",
 					Body:        body,
+					Timestamp:   tweettimestamp,
 				})
 			failOnError(err, "Failed to publish a message")
 

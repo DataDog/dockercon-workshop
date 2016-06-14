@@ -13,6 +13,8 @@ services:
       - twitterConsumerSecret
       - twitterAccessToken
       - twitterTokenSecret
+    ports:
+      - "8123:8123"
 
   logstash:
     build: logstash
