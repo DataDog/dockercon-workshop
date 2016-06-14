@@ -1,0 +1,46 @@
+version: '2'
+services:
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+     - "8080:15672"
+     - "5672:5672"
+
+  golang:
+    build: golang
+
+  logstash:
+    build: logstash
+    command: -f /etc/logstash.conf
+
+  elastic:
+    image: elasticsearch
+    ports:
+      - "9200:9200"
+
+
+  datadog:
+    image: datadog/docker-dd-agent
+    environment:
+      - API_KEY
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc/mounts:/host/proc/mounts:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+      - ./datadog-conf:/etc/dd-agent/conf.d:ro
+
+  kibana:
+    image: kibana
+    links:
+      - elastic:elasticsearch
+      - logstash
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_URL=http://elastic:9200
+  # web:
+  #   image: nginx
+
+
+
+
