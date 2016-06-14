@@ -1,0 +1,4 @@
+init_config:
+
+instances:
+    -  rabbitmq_api_url: http://rabbit:15672/api/

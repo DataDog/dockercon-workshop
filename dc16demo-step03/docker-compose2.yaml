@@ -1,0 +1,19 @@
+version: '2'
+services:
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+     - "8080:15672"
+     - "5672:5672"
+
+  golang:
+    build:
+      context: golang
+      dockerfile: Dockerfile2
+    environment:
+      - twitterConsumerKey
+      - twitterConsumerSecret
+      - twitterAccessToken
+      - twitterTokenSecret
+    depends_on:
+      - rabbit
