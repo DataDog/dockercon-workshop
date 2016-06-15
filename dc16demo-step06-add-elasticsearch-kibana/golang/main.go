@@ -17,6 +17,8 @@ var twitterConsumerSecret string = os.Getenv("twitterConsumerSecret")
 var twitterAccessToken string = os.Getenv("twitterAccessToken")
 var twitterTokenSecret string = os.Getenv("twitterTokenSecret")
 
+var twitterQuery string = "dockercon OR docker OR datadog"
+
 var twitterLastRun = time.Now().Add(time.Minute * -5)
 
 func failOnError(err error, msg string) {
@@ -62,13 +64,11 @@ func main() {
 	anaconda.SetConsumerKey(twitterConsumerKey)
 	anaconda.SetConsumerSecret(twitterConsumerSecret)
 	maxId := int64(9223372036854775807)
-
 	limiter := time.Tick(time.Second * 60 * 15 / 180)
 	for {
 		<-limiter
-		tweets := collectTweets("dockercon OR docker OR datadog", maxId)
+		tweets := collectTweets(twitterQuery, maxId)
 		for _, tweet := range tweets.Statuses {
-			const minId = tweet.Id
 			tweettimestamp, _ := time.Parse(time.RubyDate, tweet.CreatedAt)
 			body := []byte(fmt.Sprintf("%v;;;%v;;;%v;;;%v", tweettimestamp.Format(time.RFC3339Nano), strconv.FormatInt(tweet.Id, 10), tweet.User.ScreenName, tweet.Text))
 			// fmt.Println(tweet.Text)
@@ -84,7 +84,6 @@ func main() {
 					Timestamp:   tweettimestamp,
 				})
 			failOnError(err, "Failed to publish a message")
-
 		}
 	}
 }

@@ -1,0 +1,31 @@
+version: '2'
+services:
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+     - "8080:15672"
+     - "5672:5672"
+
+  golang:
+    build: golang
+    environment:
+      - twitterConsumerKey
+      - twitterConsumerSecret
+      - twitterAccessToken
+      - twitterTokenSecret
+    depends_on:
+      - rabbit
+
+  logstash:
+    build: logstash
+    command: -f /etc/logstash.conf
+
+  datadog:
+    image: datadog/docker-dd-agent:latest
+    environment:
+      - API_KEY
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+      - ./datadog-conf:/conf.d:ro
+      - /proc:/host/proc:ro

@@ -23,3 +23,7 @@ OR, Join all the commands into one:
 
     docker exec -it `docker ps -f "name=datadog" -q` service datadog-agent info
 
+As you start working with the containers more, adding features to the containers, you will find it useful to pipe the commands together, like this:
+
+    docker-compose rm -f; docker-compose build; docker-compose up
+

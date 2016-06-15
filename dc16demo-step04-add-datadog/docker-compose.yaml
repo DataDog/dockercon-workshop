@@ -17,11 +17,11 @@ services:
       - rabbit
 
   datadog:
-    image: datadog/docker-dd-agent
+    image: datadog/docker-dd-agent:latest
     environment:
       - API_KEY
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /proc/mounts:/host/proc/mounts:ro
       - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
       - ./datadog-conf:/conf.d:ro
+      - /proc:/host/proc:ro
