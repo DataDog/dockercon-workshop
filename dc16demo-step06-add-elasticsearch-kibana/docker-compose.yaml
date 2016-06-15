@@ -7,7 +7,7 @@ services:
      - "5672:5672"
 
   golang:
-    build: golang
+    image: dc16demostep03addgolang_dc2016golangapp
     environment:
       - twitterConsumerKey
       - twitterConsumerSecret

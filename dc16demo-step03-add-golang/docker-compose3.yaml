@@ -6,7 +6,7 @@ services:
      - "8080:15672"
      - "5672:5672"
 
-  golang:
+  dc2016golangapp:
     image: dc16demostep03addgolang_dc2016golangapp
     environment:
       - twitterConsumerKey
@@ -16,12 +16,3 @@ services:
     depends_on:
       - rabbit
 
-  datadog:
-    image: datadog/docker-dd-agent:latest
-    environment:
-      - API_KEY
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
-      - ./datadog-conf:/conf.d:ro
-      - /proc:/host/proc:ro

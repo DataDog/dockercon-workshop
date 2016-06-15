@@ -25,7 +25,6 @@ services:
     ports:
       - "9200:9200"
 
-
   datadog:
     image: datadog/docker-dd-agent
     environment:

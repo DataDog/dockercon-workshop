@@ -1,0 +1,6 @@
+FROM dc16demostep05addlogstash_logstash
+
+COPY logstash.conf /etc/logstash.conf
+
+
+

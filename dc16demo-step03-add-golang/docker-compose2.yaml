@@ -6,7 +6,7 @@ services:
      - "8080:15672"
      - "5672:5672"
 
-  golang:
+  dc2016golangapp:
     build:
       context: golang
       dockerfile: Dockerfile2

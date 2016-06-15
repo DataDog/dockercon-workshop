@@ -25,3 +25,8 @@ Review docker-compose2.yaml that refers to the new Dockerfile2 file
 
 Go to http://localhost:8080 and look around the rabbit interface. Review the Exchange, queue defined in the go app.
 
+We probably should have to redownload everything each time to get this golang container going
+
+    docker-compose -f docker-compose2.yaml build dc2016golangapp
+
+    docker-compose -f docker-compose3.yaml up

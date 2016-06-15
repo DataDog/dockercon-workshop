@@ -1,5 +1,5 @@
-Add the Logstash
+Add the elastic and kibana
 
-Review the logstash/Dockerfile
+Review the docker-compose
 
-Review the logstash/logstash.conf file
+    docker-compose up

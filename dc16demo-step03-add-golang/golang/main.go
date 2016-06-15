@@ -83,7 +83,6 @@ func main() {
 					Timestamp:   tweettimestamp,
 				})
 			failOnError(err, "Failed to publish a message")
-
 		}
 	}
 }
