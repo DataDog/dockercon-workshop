@@ -1,6 +1,6 @@
 Start with this command:
 
-    docker -d run --hostname rabbit --name rabbit rabbitmq:3
+    docker run -d --hostname rabbit --name rabbit rabbitmq:3
 
 See your running containers:
 
