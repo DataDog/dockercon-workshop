@@ -13,3 +13,6 @@ Review the logstash/logstash.conf file
     docker images
 
     docker-compose -f docker-compose2.yaml up
+
+
+stop and remove the containers before moving on

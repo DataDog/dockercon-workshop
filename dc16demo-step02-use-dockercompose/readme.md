@@ -14,6 +14,7 @@ Start the container
 To stop if CTRL-C doesn't stop it:
 
     docker-compose stop <service>
+    docker-compose stop    // to stop all services in the docker-compose file
 
 To remove the containers defined in the local docker-compose.yaml
 

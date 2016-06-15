@@ -22,6 +22,8 @@ Notice that you cannot run this again since the container exists. Remove it to r
 
     docker rm <container-id>
 
+Now run that docker run command.
+
 Go to https://hub.docker.com, search for rabbitmq. Click on the first item. Review the instructions for using the image.
 
 Stop and remove the rabbit container. Run again using 3-management. Look at the options for exposing a port
