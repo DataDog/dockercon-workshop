@@ -6,7 +6,6 @@ Review **docker-compose.yaml** file
         image: rabbitmq:3-management
         ports:
          - "8080:15672"
-         - "5672:5672"
 
 Start the container
 

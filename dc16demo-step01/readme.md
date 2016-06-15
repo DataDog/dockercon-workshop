@@ -31,3 +31,4 @@ Stop and remove the rabbit container. Run again using 3-management. Look at the 
 
 Open http://localhost:8080
 
+Stop the container before moving on.
