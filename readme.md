@@ -1,4 +1,4 @@
-1.  Install Docker. If you are on a Mac or Windows, the easiest option is the Docker Toolbox (https://www.docker.com/products/docker-toolbox). There is a Docker for Mac beta program that uses xhyve instead of VirtualBox and VMWare Fusion, but there are still some issues with it. This session will use the standard released version of Docker instead.
+1.  Install Docker. If you are on a Mac or Windows, the easiest option is the Docker Toolbox (https://www.docker.com/products/docker-toolbox). You can also use the Docker for Mac beta if you have access to it.
 
 2.  Create a new machine with docker-machine. Having 4G RAM for the machine is recommended. If using VMWare Fusion, use this command:
 
@@ -15,4 +15,4 @@
 
     To start using the created docker-machine for all of your docker and docker-compose commands, run:
 
-        docker
+        eval $(docker-machine env dev)
