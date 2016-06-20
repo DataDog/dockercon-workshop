@@ -1,6 +1,6 @@
-Add a golang app to push tweets into RabbitMQ
+# Step 03 - Add a second container - a GoLang app
 
-Login to Twitter.com, navigate to https://apps.twitter.com/ and create an app.  Find the link to *manage keys and access tokens*. Click the Create my Tokens button.
+The application being used requires access to the Twitter API. This requires logging in to Twitter and creating an app. Do so at https://apps.twitter.com/ and create an app.  Find the link to *manage keys and access tokens*. Click the Create my Tokens button.
 
 Create environment variables in your shell and assign the appropriate values for:
 
@@ -25,7 +25,7 @@ Review docker-compose2.yaml that refers to the new Dockerfile2 file
 
 Go to http://localhost:8080 and look around the rabbit interface. Review the Exchange, queue defined in the go app.
 
-We probably should have to redownload everything each time to get this golang container going
+We probably don't want to have to redownload everything each time to get this golang container going, so build it now to a new image and then use that image.
 
     docker-compose -f docker-compose2.yaml build dc2016golangapp
 
