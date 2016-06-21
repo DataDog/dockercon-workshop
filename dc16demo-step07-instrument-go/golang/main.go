@@ -66,7 +66,6 @@ func main() {
 		statsd.Info,    //event type, Info, Error, Warning, or Success
 		[]string{"lang:golang", "demo:dockercon"},
 	})
-	datadogClient.Count("app.runs", 1, nil, apiRateLimit.Seconds())
 	rabbitconn, err := amqp.Dial("amqp://guest:guest@rabbit:5672")
 
 	defer rabbitconn.Close()
