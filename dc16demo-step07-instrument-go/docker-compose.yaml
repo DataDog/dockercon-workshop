@@ -7,9 +7,7 @@ services:
      - "5672:5672"
 
   golangapp:
-    build:
-      context: golang
-      dockerfile: Dockerfile2
+    build: golang
     environment:
       - twitterConsumerKey
       - twitterConsumerSecret

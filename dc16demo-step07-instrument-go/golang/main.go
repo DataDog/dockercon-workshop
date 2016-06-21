@@ -48,6 +48,7 @@ func collectTweets(subject string, newestId int64) anaconda.SearchResponse {
 	searchResult, _ := api.GetSearch(subject, options)
 	datadogClient := connectDatadog()
 	datadogClient.Count("app.tweetscollected", 100, nil, apiRateLimit.Seconds())
+	defer datadogClient.Close()
 	return searchResult
 }
 
@@ -55,6 +56,7 @@ func main() {
 	host, _ := os.Hostname()
 
 	datadogClient := connectDatadog()
+	defer datadogClient.Close()
 	err := datadogClient.Event(&statsd.Event{
 		fmt.Sprintf("TwitterGoLang Started on %v", host), //title
 		"Started Twitter GolLang App for DockerCon 2016", //text
