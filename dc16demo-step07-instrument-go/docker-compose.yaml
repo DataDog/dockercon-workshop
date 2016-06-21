@@ -1,0 +1,50 @@
+version: '2'
+services:
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+     - "8080:15672"
+     - "5672:5672"
+
+  golangapp:
+    build:
+      context: golang
+      dockerfile: Dockerfile2
+    environment:
+      - twitterConsumerKey
+      - twitterConsumerSecret
+      - twitterAccessToken
+      - twitterTokenSecret
+    depends_on:
+      - rabbit
+
+  logstash:
+    build: logstash
+    command: -f /etc/logstash.conf
+
+  elastic:
+    image: elasticsearch
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: kibana
+    links:
+      - elastic:elasticsearch
+      - logstash
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_URL=http://elastic:9200
+
+  datadog:
+    image: datadog/docker-dd-agent:latest
+    environment:
+      - API_KEY
+    ports:
+      - "8125:8125"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+      - ./datadog-conf:/conf.d:ro
+      - /proc:/host/proc:ro

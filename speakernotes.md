@@ -29,10 +29,10 @@ x logstash overview
 x look at the step 5 logstash dockerfile and conf file
 x look at the step 5 docker-compose file
 x step 05
-elasticsearch and kibana overview
-look at step 6 docker-compose file
-step 06
-talk about instrumenting the app - where is it appropriate
+x elasticsearch and kibana overview
+x look at step 6 docker-compose file
+x step 06
+x talk about instrumenting the app - where is it appropriate
 step 07 ** still need to write up
 
 
