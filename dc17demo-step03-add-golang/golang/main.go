@@ -5,7 +5,7 @@ import (
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/streadway/amqp"
 	"log"
-    "net/http"
+	"net/http"
 	"net/url"
 	"os"
 	"strconv"
@@ -20,10 +20,10 @@ var twitterTokenSecret string = os.Getenv("twitterTokenSecret")
 var twitterLastRun = time.Now().Add(time.Minute * -5)
 
 func startHttpCheck() {
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Hello Web")
-    })
-    http.ListenAndServe(":8123", nil)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello Web")
+	})
+	http.ListenAndServe(":8123", nil)
 }
 
 func failOnError(err error, msg string) {
@@ -40,12 +40,12 @@ func collectTweets(subject string, newestId int64) anaconda.SearchResponse {
 	options.Set("result_type", "recent")
 	options.Set("max_id", strconv.FormatInt(newestId, 10))
 	searchResult, _ := api.GetSearch(subject, options)
-    fmt.Println(searchResult)
+	fmt.Println(searchResult)
 	return searchResult
 }
 
 func main() {
-    go startHttpCheck()
+	go startHttpCheck()
 
 	rabbitconn, err := amqp.Dial("amqp://guest:guest@rabbit:5672")
 
@@ -69,14 +69,14 @@ func main() {
 	err = ch.QueueBind("TweetQ", "logstash", "tweets", false, nil)
 	failOnError(err, "Failed to declare queue")
 
-    fmt.Println("connected")
+	fmt.Println("connected")
 
 	anaconda.SetConsumerKey(twitterConsumerKey)
 	anaconda.SetConsumerSecret(twitterConsumerSecret)
 	maxId := int64(9223372036854775807)
 	limiter := time.Tick(time.Second * 60 * 15 / 180)
 	fmt.Println(limiter)
-    for {
+	for {
 		<-limiter
 		tweets := collectTweets("dockercon OR docker OR datadog", maxId)
 
