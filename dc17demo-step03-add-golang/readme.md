@@ -27,6 +27,6 @@ Go to http://localhost:8080 and look around the rabbit interface. Review the Exc
 
 We probably don't want to have to redownload everything each time to get this golang container going, so build it now to a new image and then use that image.
 
-    docker-compose -f docker-compose2.yaml build dc2016golangapp
+    docker-compose -f docker-compose2.yaml build dc2017golangapp
 
     docker-compose -f docker-compose3.yaml up

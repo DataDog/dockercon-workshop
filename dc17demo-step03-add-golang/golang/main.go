@@ -37,6 +37,7 @@ func collectTweets(subject string, newestId int64) anaconda.SearchResponse {
 }
 
 func main() {
+  fmt.Println("starting app")
 	rabbitconn, err := amqp.Dial("amqp://guest:guest@rabbit:5672")
 
 	defer rabbitconn.Close()
