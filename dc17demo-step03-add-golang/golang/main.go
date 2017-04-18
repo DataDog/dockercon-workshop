@@ -72,7 +72,6 @@ func main() {
 	anaconda.SetConsumerSecret(twitterConsumerSecret)
 	maxId := int64(9223372036854775807)
 	limiter := time.Tick(time.Second * 60 * 15 / 180)
-	fmt.Println(limiter)
 	for {
 		<-limiter
 		tweets := collectTweets("dockercon OR docker OR datadog", maxId)
