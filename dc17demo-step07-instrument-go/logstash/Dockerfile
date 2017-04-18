@@ -1,6 +1,6 @@
-FROM dc16demostep05addlogstash_logstash
+FROM dc17demostep05addlogstash_logstash
 
-COPY logstashwithoutput.conf /etc/logstash.conf
+COPY logstash.conf /etc/logstash.conf
 
 
 

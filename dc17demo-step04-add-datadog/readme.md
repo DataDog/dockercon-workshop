@@ -12,8 +12,8 @@ Start the containers
 
 Open a shell on the datadog container in a new terminal
 
-    docker ps -f "name=_datadog"  // make note of the container id
-    docker exec -it <container-id> bash
+
+    docker-compose exec datadog bash
 
 Run the Datadog info command
 
@@ -21,8 +21,7 @@ Run the Datadog info command
 
 OR, Join all the commands into one:
 
-    docker exec -it `docker ps -f "name=_datadog" -q` service datadog-agent info // for bash users
-    docker exec -it (docker ps -f "name=_datadog" -q) service datadog-agent info // for fish users
+    docker-compose exec datadog service datadog-agent info
 
 As you start working with the containers more, adding features to the containers, you will find it useful to pipe the commands together, like this:
 

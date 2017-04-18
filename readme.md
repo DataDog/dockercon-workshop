@@ -7,7 +7,5 @@
         docker pull golang:1.8-alpine
         docker pull datadog/docker-dd-agent:latest
         docker pull logstash
-        docker pull elasticsearch
-        docker pull kibana
 
 

@@ -6,11 +6,11 @@ import (
 	"github.com/DataDog/datadog-go/statsd"
 	"github.com/streadway/amqp"
 	"log"
-	"net"
 	"net/url"
 	"os"
 	"strconv"
 	"time"
+  "net/http"
 )
 
 var twitterConsumerKey string = os.Getenv("twitterConsumerKey")
@@ -34,12 +34,14 @@ func failOnError(err error, msg string) {
 func connectDatadog() *statsd.Client {
 	c, err := statsd.New("datadog:8125")
 	failOnError(err, "Failed to open connection to DogStatsD")
-	c.Namespace = "dc2016golang."
+	c.Namespace = "dockercon2017golang."
 	c.Tags = append(c.Tags, coolTagForApp)
+  fmt.Println("datadog connected")
 	return c
 }
 
 func collectTweets(subject string, newestId int64) anaconda.SearchResponse {
+  fmt.Println("collecting tweets")
 	api := anaconda.NewTwitterApi(twitterAccessToken, twitterTokenSecret)
 	options := url.Values{}
 	options.Set("count", "100")
@@ -53,13 +55,14 @@ func collectTweets(subject string, newestId int64) anaconda.SearchResponse {
 }
 
 func main() {
-	host, _ := os.Hostname()
+  fmt.Println("starting app")
+  host, _ := os.Hostname()
 
 	datadogClient := connectDatadog()
 	defer datadogClient.Close()
 	err := datadogClient.Event(&statsd.Event{
 		fmt.Sprintf("TwitterGoLang Started on %v", host), //title
-		"Started Twitter GolLang App for DockerCon 2016", //text
+		"Started Twitter GoLang App for DockerCon 2017", //text
 		time.Now(),     //time
 		host,           //hostname
 		aggregationKey, //aggregation key
@@ -69,7 +72,7 @@ func main() {
 		[]string{"lang:golang", "demo:dockercon"},
 	})
 	rabbitconn, err := amqp.Dial("amqp://guest:guest@rabbit:5672")
-
+  failOnError(err, "Failed to connect to Rabbit")
 	defer rabbitconn.Close()
 
 	ch, err := rabbitconn.Channel()
@@ -89,8 +92,11 @@ func main() {
 	ch.QueueDeclare("TweetQ", false, false, false, false, nil)
 	err = ch.QueueBind("TweetQ", "logstash", "tweets", false, nil)
 	failOnError(err, "Failed to declare queue")
-	net.Listen("tcp", "8123")
-	anaconda.SetConsumerKey(twitterConsumerKey)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello Web")
+  })
+  http.ListenAndServe(":8123", nil)
+  anaconda.SetConsumerKey(twitterConsumerKey)
 	anaconda.SetConsumerSecret(twitterConsumerSecret)
 	maxId := int64(9223372036854775807)
 	limiter := time.Tick(apiRateLimit)

@@ -5,11 +5,11 @@ import (
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/streadway/amqp"
 	"log"
-	"net"
 	"net/url"
 	"os"
 	"strconv"
 	"time"
+  "net/http"
 )
 
 var twitterConsumerKey string = os.Getenv("twitterConsumerKey")
@@ -59,8 +59,11 @@ func main() {
 	ch.QueueDeclare("TweetQ", false, false, false, false, nil)
 	err = ch.QueueBind("TweetQ", "logstash", "tweets", false, nil)
 	failOnError(err, "Failed to declare queue")
-	net.Listen("tcp", "8123")
-	anaconda.SetConsumerKey(twitterConsumerKey)
+  http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello Web")
+  })
+  http.ListenAndServe(":8123", nil)
+  anaconda.SetConsumerKey(twitterConsumerKey)
 	anaconda.SetConsumerSecret(twitterConsumerSecret)
 	maxId := int64(9223372036854775807)
 	limiter := time.Tick(time.Second * 60 * 15 / 180)

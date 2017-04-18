@@ -1,24 +1,40 @@
-version: '2'
+version: '2.1'
 services:
   rabbit:
-    image: rabbitmq:3.6-management
+    build:
+      context: .
+      dockerfile: rabbitdockerfile
     ports:
      - "8080:15672"
      - "5672:5672"
+    healthcheck:
+      test: curl -f http://localhost:15672
+      interval: 15s
+      timeout: 3s
+      retries: 10
 
   golang:
-    image: dc16demostep03addgolang_dc2016golangapp
+    image: dc17demostep03addgolang_dc2017golangapp
     environment:
       - twitterConsumerKey
       - twitterConsumerSecret
       - twitterAccessToken
       - twitterTokenSecret
     depends_on:
-      - rabbit
+      rabbit:
+        condition: service_healthy
+    healthcheck:
+      test: curl -f http://localhost:8123
+      interval: 30s
+      timeout: 3s
+      retries: 10
 
   logstash:
     build: logstash
     command: -f /etc/logstash.conf
+    depends_on:
+      golang:
+        condition: service_healthy
 
   datadog:
     image: datadog/docker-dd-agent:latest
