@@ -40,7 +40,6 @@ func collectTweets(subject string, newestId int64) anaconda.SearchResponse {
 	options.Set("result_type", "recent")
 	options.Set("max_id", strconv.FormatInt(newestId, 10))
 	searchResult, _ := api.GetSearch(subject, options)
-	fmt.Println(searchResult)
 	return searchResult
 }
 
@@ -68,8 +67,6 @@ func main() {
 	ch.QueueDeclare("TweetQ", false, false, false, false, nil)
 	err = ch.QueueBind("TweetQ", "logstash", "tweets", false, nil)
 	failOnError(err, "Failed to declare queue")
-
-	fmt.Println("connected")
 
 	anaconda.SetConsumerKey(twitterConsumerKey)
 	anaconda.SetConsumerSecret(twitterConsumerSecret)
